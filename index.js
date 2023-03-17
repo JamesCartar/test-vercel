@@ -25,14 +25,14 @@ app.use(express.json({ limit: '100mb' }))
 app.use(express.urlencoded({ limit: '100mb', extended: true}))
 
 // welcom route
-// app.use('/', (req, res, next) => {
-//   res.status(200).json({success: true, msg: "Welcome from thuma api !"})
-// })
-// app.use('/auth', authRoute)
-// app.use('/members', authMiddleware, memberRoute)
-// app.use('/memories', memoryRoute)
+app.get('/', (req, res, next) => {
+  res.status(200).json({success: true, msg: "Welcome from thuma api !"})
+})
+app.use('/auth', authRoute)
+app.use('/members', authMiddleware, memberRoute)
+app.use('/memories', memoryRoute)
 
-app.use('/home', homeRoute);
+// app.use('/home', homeRoute);
 
 
 
@@ -46,7 +46,7 @@ app.use(errorHandler)
 const start = async () => {
     try {
         // connecting to Mongodb
-        connectDB(process.env.MONGO_URI)
+        connectDB("mongodb+srv://thuma:HeEu1LiKeFR27t0i@thuma.dpg3srm.mongodb.net/?retryWrites=true&w=majority")
         
         app.listen(3000, () => {
             console.log(`Server is listening on port 9000`)
