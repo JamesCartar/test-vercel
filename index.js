@@ -14,7 +14,7 @@ const { authMiddleware } = require("./milddleware/auth.js")
 const authRoute = require('./route/auth.js')
 const memberRoute = require('./route/member.js')
 const memoryRoute = require('./route/memory.js')
-const homeRoute = require('./route/home.js')
+// const homeRoute = require('./route/home.js')
 
 app.use(cors({
   origin: 'https://animated-panda-655246.netlify.app',
