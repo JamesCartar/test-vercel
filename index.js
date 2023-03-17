@@ -16,7 +16,7 @@ const memberRoute = require('./route/member.js')
 const memoryRoute = require('./route/memory.js')
 
 app.use(cors({
-  origin: ['http://127.0.0.1:5501', 'http://127.0.0.1:5500', 'https://thum-frontend.vercel.app'],
+  origin: 'https://animated-panda-655246.netlify.app',
   credentials: true,
 }))
 
