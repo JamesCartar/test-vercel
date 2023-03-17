@@ -47,7 +47,7 @@ const start = async () => {
     try {
         // connecting to Mongodb
         // connectDB("mongodb+srv://thuma:HeEu1LiKeFR27t0i@thuma.dpg3srm.mongodb.net/?retryWrites=true&w=majority")
-        mongoose.set('strictQuery', true);
+        // mongoose.set('strictQuery', true);
         mongoose.connect("mongodb+srv://thuma:HeEu1LiKeFR27t0i@thuma.dpg3srm.mongodb.net/?retryWrites=true&w=majority", {
           useNewUrlParser: true,
           useUnifiedTopology: true,
