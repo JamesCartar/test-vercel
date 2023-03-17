@@ -5,7 +5,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 
-const connectDB = require('./config/connectDb.js')
+const connectDB = require('./config/connectDB.js')
 const { notFound } = require("./milddleware/notFound.js")
 const { errorHandler } = require("./milddleware/errorHandler.js")
 const { authMiddleware } = require("./milddleware/auth.js")
