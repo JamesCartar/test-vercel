@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 const express = require('express')
 const cors = require('cors')
 const app = express()
-const mongoose = require("mongoose");
+
 const connectDB = require('./config/connectDB.js')
 const { notFound } = require("./milddleware/notFound.js")
 const { errorHandler } = require("./milddleware/errorHandler.js")
@@ -46,22 +46,11 @@ app.use(errorHandler)
 const start = async () => {
     try {
         // connecting to Mongodb
-        // connectDB("mongodb+srv://thuma:HeEu1LiKeFR27t0i@thuma.dpg3srm.mongodb.net/?retryWrites=true&w=majority")
-        // mongoose.set('strictQuery', true);
-        mongoose.connect("mongodb+srv://thuma:HeEu1LiKeFR27t0i@thuma.dpg3srm.mongodb.net/?retryWrites=true&w=majority", {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        })
-        .then(() => {
-                  
-          app.listen(3000, () => {
+        await connectDB(process.env.MONGO_URI)
+        
+        app.listen(3000, () => {
             console.log(`Server is listening on port 9000`)
-          })
         })
-        .catch(e => {
-          console.log(e)
-        })
-
     } catch(error) {
         console.log(error)
     }
