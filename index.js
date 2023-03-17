@@ -46,7 +46,7 @@ app.use(errorHandler)
 const start = async () => {
     try {
         // connecting to Mongodb
-        await connectDB(process.env.MONGO_URI)
+        await connectDB("mongodb+srv://thuma:HeEu1LiKeFR27t0i@thuma.dpg3srm.mongodb.net/?retryWrites=true&w=majority")
         
         app.listen(3000, () => {
             console.log(`Server is listening on port 9000`)
