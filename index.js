@@ -14,6 +14,7 @@ const { authMiddleware } = require("./milddleware/auth.js")
 const authRoute = require('./route/auth.js')
 const memberRoute = require('./route/member.js')
 const memoryRoute = require('./route/memory.js')
+const homeRoute = require('./route/home.js')
 
 app.use(cors({
   origin: 'https://animated-panda-655246.netlify.app',
@@ -24,12 +25,14 @@ app.use(express.json({ limit: '100mb' }))
 app.use(express.urlencoded({ limit: '100mb', extended: true}))
 
 // welcom route
-app.use('/', (req, res, next) => {
-  res.status(200).json({success: true, msg: "Welcome from thuma api !"})
-})
-app.use('/auth', authRoute)
-app.use('/members', authMiddleware, memberRoute)
-app.use('/memories', memoryRoute)
+// app.use('/', (req, res, next) => {
+//   res.status(200).json({success: true, msg: "Welcome from thuma api !"})
+// })
+// app.use('/auth', authRoute)
+// app.use('/members', authMiddleware, memberRoute)
+// app.use('/memories', memoryRoute)
+
+app.use('/home', homeRoute);
 
 
 
