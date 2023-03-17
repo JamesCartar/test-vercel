@@ -25,7 +25,7 @@ app.use(express.json({ limit: '100mb' }))
 app.use(express.urlencoded({ limit: '100mb', extended: true}))
 
 // welcom route
-app.use('/', (req, res, next) => {
+app.get('/', (req, res, next) => {
   res.status(200).json({success: true, msg: "Welcome from thuma api !"})
 })
 app.use('/auth', authRoute)
