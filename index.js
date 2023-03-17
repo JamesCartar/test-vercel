@@ -17,7 +17,7 @@ const memoryRoute = require('./route/memory.js')
 // const homeRoute = require('./route/home.js')
 
 app.use(cors({
-  origin: 'https://animated-panda-655246.netlify.app',
+  origin: 'https://thuma4future.netlify.app',
   credentials: true,
 }))
 
