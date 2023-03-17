@@ -17,7 +17,7 @@ const memoryRoute = require('./route/memory.js')
 // const homeRoute = require('./route/home.js')
 
 app.use(cors({
-  origin: 'https://thuma4future.netlify.app',
+  origin: ['https://thuma4future.netlify.app', 'http://127.0.0.1:5500'],
   credentials: true,
 }))
 
