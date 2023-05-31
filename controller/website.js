@@ -21,6 +21,15 @@ const getAllMemory = asyncWrapper(async (req, res, next) => {
         });
 });
 
+const getMemory = asyncWrapper(async (req, res, next) => {
+    const memorie = await memoryModel.findById(req.params.id);
+
+    res.status(200).json({
+        success: true,
+        memorie: memorie,
+        });
+});
+
 
 const getAllProject = asyncWrapper(async (req, res, next) => {
     const foundProjects = await projectModel.find({}, { detail: 0 });
@@ -41,4 +50,4 @@ const getProject = asyncWrapper(async (req, res, next) => {
 });
 
 
-module.exports = { getAllMemory, getAllProject, getProject };
+module.exports = { getAllMemory, getMemory, getAllProject, getProject };
