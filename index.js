@@ -19,7 +19,7 @@ const websiteRouter = require('./route/website.js')
 const { websiteMiddleware } = require("./milddleware/website.js")
 
 app.use(cors({
-  origin: ['https://thuma-dashboard.vercel.app', 'http://127.0.0.1:5500', 'http://127.0.0.1:5501', "http://127.0.0.1:5502"],
+  origin: ['https://thuma-dashboard.vercel.app', 'https://thuma4future.netlify.app', 'http://127.0.0.1:5500', 'http://127.0.0.1:5501', "http://127.0.0.1:5502"],
   credentials: true,
 }))
 
