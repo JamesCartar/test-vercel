@@ -13,11 +13,13 @@ const { authMiddleware } = require("./milddleware/auth.js")
 // routes
 const authRoute = require('./route/auth.js')
 const memberRoute = require('./route/member.js')
+const projectRoute = require('./route/project.js')
 const memoryRoute = require('./route/memory.js')
-// const homeRoute = require('./route/home.js')
+const websiteRouter = require('./route/website.js')
+const { websiteMiddleware } = require("./milddleware/website.js")
 
 app.use(cors({
-  origin: ['https://thuma4future.netlify.app', 'http://127.0.0.1:5500', 'http://127.0.0.1:5501'],
+  origin: ['https://thuma4future.netlify.app', 'http://127.0.0.1:5500', 'http://127.0.0.1:5501', "http://127.0.0.1:5502"],
   credentials: true,
 }))
 
@@ -29,10 +31,11 @@ app.get('/', (req, res, next) => {
   res.status(200).json({success: true, msg: "Welcome from thuma api !"})
 })
 app.use('/auth', authRoute)
+app.use('/memories', authMiddleware, memoryRoute)
+app.use('/projects', authMiddleware, projectRoute)
 app.use('/members', authMiddleware, memberRoute)
-app.use('/memories', memoryRoute)
+app.use('/website', websiteMiddleware, websiteRouter)
 
-// app.use('/home', homeRoute);
 
 
 
@@ -49,7 +52,7 @@ const start = async () => {
         await connectDB("mongodb+srv://thuma:HeEu1LiKeFR27t0i@thuma.dpg3srm.mongodb.net/?retryWrites=true&w=majority")
         
         app.listen(3000, () => {
-            console.log(`Server is listening on port 9000`)
+            console.log(`Server is listening on port 3000`)
         })
     } catch(error) {
         console.log(error)

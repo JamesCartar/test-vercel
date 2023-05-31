@@ -12,7 +12,7 @@ const memberSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
+      default: null,
     },
     password: {
       type: String,
@@ -40,15 +40,11 @@ const memberSchema = new mongoose.Schema(
     },
     address: {
         type: String,
-        required: true,
-    },
-    fbAcc: {
-        type: String,
-        required: true,
+        default: null,
     },
     job: {
         type: String,
-        required: true,
+        default: null,
     },
     status: {
       type: String,

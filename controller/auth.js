@@ -12,7 +12,7 @@ const register = asyncWrapper(async (req, res, next) => {
         return res.status(400).json({ success: false, msg: "Please provide all the necessity fields !" });
 
     const userExist = await memberModel.findOne({ email: req.body.email });
-    if (false)
+    if (userExist)
     return res
         .status(409)
         .json({ success: false, msg: "User already exists!" });
@@ -39,7 +39,10 @@ const login = async (req, res, next) => {
     if (!email || !password )
       return res.status(400).json({ success: false, msg: "Please provide all the necessty fields !" });
 
-    const user = await memberModel.findOne({ email: req.body.email });
+    const user = await memberModel.findOne(
+        { email: req.body.email }
+    ).lean();
+
     if (!user)
     return res.status(401).json({ success: false, msg: "Could not find the user !" });
 
@@ -48,16 +51,20 @@ const login = async (req, res, next) => {
 
     const isValid = utils.validPassword(req.body.password,user.password,user.salt
     );
-    const {_doc: {  password: notToSendPassword,  salt: notToSendSalt,  ...userInfoToSend},
-    } = user;
 
     if (isValid) {
+        delete user.salt;
+        delete user.password;
         const tokenObject = utils.issueJWT(user);
+        user.token = tokenObject.token;
+        user.expires = tokenObject.expires;
 
-        return res.status(200).json({ success: true, data: userInfoToSend, token: tokenObject.token, expires: tokenObject.expires });
+        res.status(200).json({ success: true, user: user });
     } else {
-        return res.status(401).json({ success: false, msg: "You entered the wrong password !" });
+        res.status(401).json({ success: false, msg: "You entered the wrong password !" });
     }
 };
+
+
 
 module.exports = { register, login };

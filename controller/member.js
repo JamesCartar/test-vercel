@@ -26,8 +26,8 @@ const getAllMember = asyncWrapper(async (req, res, next) => {
       if (req.query.search) {
         filters = {
           $or: [
-            { name: { $regex: "^" + req.query.search, $options: "i" } },
-            { email: { $regex: "^" + req.query.search, $options: "i" } }
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } }
           ],
         };
       } else {
@@ -93,9 +93,9 @@ const getAllMember = asyncWrapper(async (req, res, next) => {
 
 const addMember = asyncWrapper(async (req, res, next) => {
     const member = await memberModel.findOne({ position: req.jwt.position });
-    if (member.position === 'Head') {
+    if (member.position.toLowerCase() == 'head') {
         const oldMember = await memberModel.findOne({ email: req.body.email });
-        if (oldMember) {
+        if (oldMember && req.body.email) { 
             return res.status(409).json({ success: false, msg: 'Member already exists !' });
         } else {
             if(req.body.password) {
@@ -112,8 +112,6 @@ const addMember = asyncWrapper(async (req, res, next) => {
     }
 });
 
-
-
 const getMember = asyncWrapper (async (req, res, next) => {
     const member = await memberModel.findOne({ position: req.jwt.position });
     if (member.position) {
@@ -129,13 +127,19 @@ const getMember = asyncWrapper (async (req, res, next) => {
 
 const updateMember = asyncWrapper( async (req, res, next) => {
     const member = await memberModel.findOne({ position: req.jwt.position });
-    if (member.position === 'Head') {
+    
+    if (member.position.toLowerCase() == 'head') {
         const oldMember = await memberModel.findOne({ _id: ObjectId(req.params.id) });
         if(oldMember) {
             if(req.body.password) {
                 const saltHash = utils.genPassword(req.body.password);
                 req.body.salt = saltHash.salt;
                 req.body.password = saltHash.hash;
+            } else {
+                delete req.body.password;
+            }
+            if(req.body.profileImage === null) {
+                delete req.body.profileImage;
             }
             const dataToUpdate = req.body;
             await memberModel.updateOne({ _id: ObjectId(req.params.id) }, { $set: dataToUpdate }, { new: true });
@@ -148,11 +152,9 @@ const updateMember = asyncWrapper( async (req, res, next) => {
     }
 });
 
-
-
 const deleteMember = asyncWrapper(async (req, res, next) => {
     const member = await memberModel.findOne({ position: req.jwt.position });
-    if (member.position === 'Head') {
+    if (member.position.toLowerCase() == 'head') {
         const oldMember = await memberModel.findOne({ _id: ObjectId(req.params.id) });
         if(oldMember) {
             await memberModel.findByIdAndDelete(req.params.id);
@@ -163,9 +165,37 @@ const deleteMember = asyncWrapper(async (req, res, next) => {
     } else {
         throw new UnAuthenticatedError();
     }
-})
+});
+
+const changePassword = async (req, res, next) => {
+    const { oldPassword, newPassword } = req.body;
+    
+    if (!oldPassword || !newPassword )
+      return res.status(400).json({ success: false, msg: "Please provide all the necessty fields !" });
+
+    const user = await memberModel.findById(req.jwt.sub);
+    if (!user) return res.status(401).json({ success: false, msg: "Could not find the user !" });
+
+    if (user.status === "leave")
+        return res.status(400).json({success: false, msg: "You are on leave time !" });
+
+
+    const isValid = utils.validPassword(req.body.oldPassword, user.password,user.salt);
+
+    if (isValid) {
+        const saltHash = utils.genPassword(newPassword);
+        user.salt = saltHash.salt;
+        user.password = saltHash.hash;
+
+        await user.save();
+        
+        res.status(200).json({ success: true, msg: "You have changed your password successfully !" });
+    } else {
+        res.status(401).json({ success: false, msg: "You entered the wrong password !" });
+    }
+};
 
 
 
 
-module.exports = { getAllMember, getMember, addMember, updateMember, deleteMember };
+module.exports = { getAllMember, getMember, addMember, updateMember, deleteMember, changePassword };

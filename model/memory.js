@@ -20,8 +20,12 @@ const memberSchema = new mongoose.Schema(
     },
     mission: {
       type: String,
-      default: true,
+      default: null,
     },
+    date: {
+      type: Date,
+      required: true,
+    }
   },
   {
     timestamps: true,

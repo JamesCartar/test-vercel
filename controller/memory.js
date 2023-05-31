@@ -23,7 +23,7 @@ const getAllMemory = asyncWrapper(async (req, res, next) => {
     let descendingOrDecending = 1;
 
     if (req.query.search) {
-        filters = {$or: [{title: { $regex: "^" + req.query.search, $options: "i" }}, {location: { $regex: "^" + req.query.search, $options: "i" }}] }  
+        filters = {$or: [{title: { $regex: req.query.search, $options: "i" }}, {location: { $regex: req.query.search, $options: "i" }}] }  
     }
 
     switch (req.query.sort) {
