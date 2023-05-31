@@ -22,11 +22,11 @@ const getAllMemory = asyncWrapper(async (req, res, next) => {
 });
 
 const getMemory = asyncWrapper(async (req, res, next) => {
-    const memorie = await memoryModel.findById(req.params.id);
+    const memory = await memoryModel.findById(req.params.id);
 
     res.status(200).json({
         success: true,
-        memorie: memorie,
+        memory: memory,
         });
 });
 
